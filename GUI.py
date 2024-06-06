@@ -2,7 +2,10 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, Label
 from PIL import Image, ImageTk
 import io
-from database_manager import add_book, update_book, remove_book, search_books, display_books, get_book_image
+from database_manager import add_book, update_book, remove_book, search_books, display_books, get_book_image, create_table
+
+# 创建数据库和表
+create_table()
 
 root = tk.Tk()
 root.title("图书管理系统 V1.0.0")
@@ -53,6 +56,12 @@ def display_all_books():
 
     scrollable_frame.update_idletasks()
     canvas.config(scrollregion=canvas.bbox("all"))
+
+# 绑定鼠标滚轮事件
+def on_mouse_wheel(event):
+    canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
+canvas.bind_all("<MouseWheel>", on_mouse_wheel)
 
 tk.Button(frame1, text="刷新图书列表", command=display_all_books).pack(fill='x')
 display_all_books()  # 初始加载图书
@@ -170,7 +179,7 @@ def show_book_details(event=None):
 
         img_data = get_book_image(selected_book_id)
         if img_data:
-            image = Image.open(io.BytesIO(img_data))
+            image = Image.open(io.Bytes.IO(img_data))
             image = image.resize((200, 300), Image.Resampling.LANCZOS)
             photo = ImageTk.PhotoImage(image)
             label_image.config(image=photo)
@@ -252,6 +261,5 @@ try:
     image_label.pack()
 except Exception as e:
     print(f"Error loading image: {e}")
-
 
 root.mainloop()
