@@ -75,12 +75,15 @@ def remove_book(book_id):
 def search_books(query):
     conn = create_connection()
     cursor = conn.cursor()
-    search_query = f"%{query}%"
-    cursor.execute('''
-    SELECT id, title, author, publisher, category, quantity, status, cover
-    FROM books
-    WHERE title LIKE ? OR author LIKE ? OR publisher LIKE ? OR category LIKE ? OR status LIKE ?
-    ''', (search_query, search_query, search_query, search_query, search_query))
+    if query.isdigit():
+        cursor.execute('SELECT id, title, author, publisher, category, quantity, status, cover FROM books WHERE id = ?', (query,))
+    else:
+        search_query = f"%{query}%"
+        cursor.execute('''
+        SELECT id, title, author, publisher, category, quantity, status, cover
+        FROM books
+        WHERE title LIKE ? OR author LIKE ? OR publisher LIKE ? OR category LIKE ? OR status LIKE ?
+        ''', (search_query, search_query, search_query, search_query, search_query))
     results = cursor.fetchall()
     conn.close()
     return results

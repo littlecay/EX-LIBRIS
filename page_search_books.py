@@ -26,22 +26,27 @@ def create_search_books_page(notebook):
         selected = list_books.curselection()
         if selected:
             selected_book_id = int(list_books.get(selected[0]).split(":")[0])
-            book = search_books(str(selected_book_id))[0]
+            print(f"Selected book ID: {selected_book_id}")  # Debug print
+            book = search_books(str(selected_book_id))
+            print(f"Search results: {book}")  # Debug print
+            if book:
+                book = book[0]
+                title_var.set(book[1])
+                author_var.set(book[2])
+                publisher_var.set(book[3])
+                category_var.set(book[4])
+                quantity_var.set(str(book[5]))
+                status_var.set(book[6])
 
-            title_var.set(book[1])
-            author_var.set(book[2])
-            publisher_var.set(book[3])
-            category_var.set(book[4])
-            quantity_var.set(str(book[5]))
-            status_var.set(book[6])
-
-            img_data = get_book_image(selected_book_id)
-            if img_data:
-                image = Image.open(io.BytesIO(img_data))
-                image = image.resize((200, 300), Image.Resampling.LANCZOS)
-                photo = ImageTk.PhotoImage(image)
-                label_image.config(image=photo)
-                label_image.image = photo  # keep a reference!
+                img_data = get_book_image(selected_book_id)
+                if img_data:
+                    image = Image.open(io.BytesIO(img_data))
+                    image = image.resize((200, 300), Image.Resampling.LANCZOS)
+                    photo = ImageTk.PhotoImage(image)
+                    label_image.config(image=photo)
+                    label_image.image = photo  # keep a reference!
+            else:
+                messagebox.showerror("错误", "未找到选定的图书信息")
 
     def update_book_details():
         selected = list_books.curselection()
