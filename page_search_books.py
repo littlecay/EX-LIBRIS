@@ -26,7 +26,9 @@ def create_search_books_page(notebook):
         selected = list_books.curselection()
         if selected:
             selected_book_id = int(list_books.get(selected[0]).split(":")[0])
+            print(f"Selected book ID: {selected_book_id}")  # Debug print
             book = search_books(str(selected_book_id))
+            print(f"Search results: {book}")  # Debug print
             if book:
                 book = book[0]
                 title_var.set(book[1])

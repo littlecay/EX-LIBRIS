@@ -2,7 +2,7 @@ import sqlite3
 from io import BytesIO
 
 def create_connection():
-    conn = sqlite3.connect('library.db')
+    conn = sqlite3.connect('books.db')
     return conn
 
 def create_table():
@@ -75,15 +75,12 @@ def remove_book(book_id):
 def search_books(query):
     conn = create_connection()
     cursor = conn.cursor()
-    if query.isdigit():
-        cursor.execute('SELECT id, title, author, publisher, category, quantity, status, cover FROM books WHERE id = ?', (query,))
-    else:
-        search_query = f"%{query}%"
-        cursor.execute('''
-        SELECT id, title, author, publisher, category, quantity, status, cover
-        FROM books
-        WHERE title LIKE ? OR author LIKE ? OR publisher LIKE ? OR category LIKE ? OR status LIKE ?
-        ''', (search_query, search_query, search_query, search_query, search_query))
+    search_query = f"%{query}%"
+    cursor.execute('''
+    SELECT id, title, author, publisher, category, quantity, status, cover
+    FROM books
+    WHERE title LIKE ? OR author LIKE ? OR publisher LIKE ? OR category LIKE ? OR status LIKE ?
+    ''', (search_query, search_query, search_query, search_query, search_query))
     results = cursor.fetchall()
     conn.close()
     return results
