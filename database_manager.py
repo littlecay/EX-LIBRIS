@@ -38,6 +38,18 @@ def add_book(title, author, publisher, category, quantity, status, image_path):
     conn.commit()
     conn.close()
 
+def get_book(book_id):
+    conn = create_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+    SELECT id, title, author, publisher, category, quantity, status, cover
+    FROM books
+    WHERE id = ?
+    ''', (book_id,))
+    result = cursor.fetchone()
+    conn.close()
+    return result
+
 def display_books():
     conn = create_connection()
     cursor = conn.cursor()
