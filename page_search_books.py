@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, Label
 from PIL import Image, ImageTk
 import io
-from database_manager import search_books, update_book, remove_book, get_book_image
+from database_manager import get_book, search_books, update_book, remove_book, get_book_image
 
 def create_search_books_page(notebook):
     frame = ttk.Frame(notebook)
@@ -27,10 +27,9 @@ def create_search_books_page(notebook):
         if selected:
             selected_book_id = int(list_books.get(selected[0]).split(":")[0])
             print(f"Selected book ID: {selected_book_id}")  # Debug print
-            book = search_books(str(selected_book_id))
-            print(f"Search results: {book}")  # Debug print
+            book = get_book(selected_book_id)
+            #print(f"Search results: {book}")  # Debug print
             if book:
-                book = book[0]
                 title_var.set(book[1])
                 author_var.set(book[2])
                 publisher_var.set(book[3])
@@ -70,7 +69,7 @@ def create_search_books_page(notebook):
     entry_search.grid(row=0, column=1)
     tk.Button(frame, text="搜索图书", command=search_and_display_books).grid(row=0, column=2)
 
-    list_books = tk.Listbox(frame, height=10)
+    list_books = tk.Listbox(frame, height=10, exportselection=False)
     list_books.grid(row=1, column=0, columnspan=3, sticky='nsew')
     list_books.bind('<<ListboxSelect>>', show_book_details)
 

@@ -44,9 +44,13 @@ def create_display_books_page(notebook):
     def on_mouse_wheel(event):
         canvas.yview_scroll(int(-1*(event.delta/120)), "units")
 
-    canvas.bind_all("<MouseWheel>", on_mouse_wheel)
+    def on_enter(event):
+        display_all_books()
 
-    tk.Button(frame, text="刷新图书列表", command=display_all_books).pack(fill='x')
+    canvas.bind_all("<MouseWheel>", on_mouse_wheel)
+    frame.bind("<Enter>", on_enter)
+
+    #tk.Button(frame, text="刷新图书列表", command=display_all_books).pack(fill='x')
     display_all_books()  # 初始加载图书
 
     return frame
