@@ -7,7 +7,7 @@ def create_copyright_info_page(notebook):
     notebook.add(frame, text='版权信息')
 
     # 添加版权信息文字
-    copyright_label = tk.Label(frame, text="图书管理系统\n版本 1.0\n版权所有 © 2024\n开发者: littlecay")
+    copyright_label = tk.Label(frame, text="图书管理系统\n版本 1.0\n版权所有 © 2024\n开发者: littlecay\n贡献者:TiferKing")
     copyright_label.pack(side="left", padx=10)
 
     # 创建一个新的框架来包含图片和图片上方的文字
